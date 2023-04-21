@@ -10,11 +10,33 @@ const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
             const data = await response.json()
             
 
+            // Farmacia cruz verde se muestra antes de AB Farma. Hay que hacer un console.log para probarlo en el video!
+            for (const i of data) {
+                if (i.local_id == "4313") {
+                 i.local_nombre = 'FARMACIA CRUZ VERDE';
+                }
+            }
+
+            //Se ordenan los objetos alfabéticamente por el nombre de la farmacia
+            data.sort((a, b) => {
+                const cadenaA = a.local_nombre.toUpperCase()
+                const cadenaB = b.local_nombre.toUpperCase()
+                if (cadenaA < cadenaB) {
+                    return -1;
+                  }
+                  if (cadenaA > cadenaB) {
+                    return 1;
+                  }
+                  return 0;
+            })
+            console.log(data)
             setDbFarm(data)
+            
         }
         consultarApi()
     }, [])
 
+    //Se crea un nuevo array para agregar los logos de las farmacias
     newArray= dbfarm.map(object => {
         if (object.local_nombre.includes("AHUMADA")) {
           return {...object, url: '../../src/images/ahumada_logo.jpg'};
@@ -34,8 +56,7 @@ const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
         }
       });
 
-      console.log(newArray)
-
+      //Se usa un filtro con un array dummy
       let resultadoBusqueda = []
       if(!busqueda){
           resultadoBusqueda = newArray
