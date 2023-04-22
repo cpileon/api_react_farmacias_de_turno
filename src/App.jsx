@@ -10,11 +10,12 @@ function App() {
 
 
   return (
-    <div className='container'>
-      <Header />
-      <Buscador busqueda={busqueda} setBusqueda={setBusqueda} />
-      <MiApi dbfarm={dbfarm} setDbFarm={setDbFarm} busqueda={busqueda} />
-    </div>
+      <div className='container'>
+        <Header />
+        <Buscador busqueda={busqueda} setBusqueda={setBusqueda} />
+        <MiApi dbfarm={dbfarm} setDbFarm={setDbFarm} busqueda={busqueda} />
+      </div>
+
   )
 }
 

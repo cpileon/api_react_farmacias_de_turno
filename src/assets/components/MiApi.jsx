@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import Loading from "./Loading"
 
 const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
     let newArray = []
@@ -50,6 +51,8 @@ const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
             return {...object, url: '../../src/images/logo_redfarma.png'};
         } else if (object.local_nombre.includes("FAMI")) {
             return {...object, url: '../../src/images/logo_famifarma.png'};
+        } else if (object.local_nombre.includes("ECOFARMACIA")) {
+            return {...object, url: '../../src/images/logo-eco-farmacias.jpg'};
         }
         else {
             return {...object, url: '../../src/images/placeholder_logo.png'};
@@ -67,19 +70,22 @@ const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
           )
       }
 
+      //Mostrar advertencia cuando los datos estén cargando
+      if(!newArray.length) return <Loading />
+
     return(
         
         <div>
             {resultadoBusqueda.map(item => (
-                <div className = "card mb-2 p-2" key={item.local_id}>
+                <div className = "card mb-3 p-2 shadow" key={item.local_id}>
                     <div className="row">
                         <div className="logo col-sm text-center">
                             <img className="card-img" src={item.url} alt="Card image cap"/>
                             <h3>{item.local_nombre}</h3>
                             <h4>{item.localidad_nombre}</h4>
                         </div>
-                        <div className="col-sm text-left">
-                            <p><strong>Horario:</strong> {item.funcionamiento_hora_apertura} - {item.funcionamiento_hora_cierre}</p>
+                        <div className="col-sm text-left align-self-center">
+                            <p><strong>Horario:</strong> {(item.funcionamiento_hora_cierre == "08:59:00" || item.funcionamiento_hora_cierre == "07:59:00" || item.funcionamiento_hora_cierre == "01:00:00") ? <>De {item.funcionamiento_hora_apertura} hrs. hasta {item.funcionamiento_hora_cierre} hrs. del día siguiente</> : <>De {item.funcionamiento_hora_apertura} hrs. hasta {item.funcionamiento_hora_cierre} hrs.</>}</p>
                             <p><strong>Comuna:</strong> {item.comuna_nombre}</p>
                             <p><strong>Día turno:</strong> {item.fecha == "2023-01-01" ? "Todos los días" : item.fecha}</p>
                             <p><strong>Dirección:</strong> {item.local_direccion}, {item.comuna_nombre}</p>

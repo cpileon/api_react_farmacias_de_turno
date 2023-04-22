@@ -1,20 +1,63 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   display: flex;
+  font-family: 'Inter', sans-serif;
+  font-family: 'Rubik', sans-serif;
+  background-image: url("../../src/images/back.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .container{
   margin-top: 15%;
-  min-width: 80%;
+  min-width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .titulo{
   display: flex;
   justify-content: center;
+  align-items: end;
+}
+
+.title{
+  font-size: 3rem;
+}
+
+.title span{
+  font-size: 6rem;
+  font-weight: bold;
+  color:rgb(174, 18, 18)
+}
+.descripcion{
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .logo img{
   width: 100px;
+}
+
+.loading{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-border{
+  width: 95px;
+  height: 95px;
+}
+
+.input-group{
+  width: 1300px;
+}
+
+.card{
+  border: none;
 }
