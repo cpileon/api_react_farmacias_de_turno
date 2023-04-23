@@ -2,40 +2,30 @@ import { useEffect } from "react"
 import Loading from "./Loading"
 
 const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
-    let newArray = []
+    let newArray = [];
 
     useEffect (()=>{
         const consultarApi = async () => {
             const url = 'https://midas.minsal.cl/farmacia_v2/WS/getLocalesTurnos.php';
-            const response = await fetch(url)
-            const data = await response.json()
+            const response = await fetch(url);
+            const data = await response.json();
             
 
-            // Farmacia cruz verde se muestra antes de AB Farma. Hay que hacer un console.log para probarlo en el video!
+            //Arreglar los nombres de farmacia que tengan un espacio al principio
             for (const i of data) {
-                if (i.local_id == "4313") {
-                 i.local_nombre = 'FARMACIA CRUZ VERDE';
+                if (i.local_nombre.startsWith(" ")) {
+                 i.local_nombre = i.local_nombre.trimStart();
                 }
             }
 
             //Se ordenan los objetos alfabéticamente por el nombre de la farmacia
-            data.sort((a, b) => {
-                const cadenaA = a.local_nombre.toUpperCase()
-                const cadenaB = b.local_nombre.toUpperCase()
-                if (cadenaA < cadenaB) {
-                    return -1;
-                  }
-                  if (cadenaA > cadenaB) {
-                    return 1;
-                  }
-                  return 0;
-            })
-            console.log(data)
-            setDbFarm(data)
+            data.sort((a, b) => a.local_nombre.toLowerCase() > b.local_nombre.toLowerCase() ? 1 : -1);
+            console.log(data);
+            setDbFarm(data);
             
         }
-        consultarApi()
-    }, [])
+        consultarApi();
+    }, []);
 
     //Se crea un nuevo array para agregar los logos de las farmacias
     newArray= dbfarm.map(object => {
@@ -60,14 +50,14 @@ const MiApi = ({dbfarm, setDbFarm, busqueda}) => {
       });
 
       //Se usa un filtro con un array dummy
-      let resultadoBusqueda = []
+      let resultadoBusqueda = [];
       if(!busqueda){
-          resultadoBusqueda = newArray
+          resultadoBusqueda = newArray;
       } else {
           resultadoBusqueda = newArray.filter(
               (farm) =>
               farm.comuna_nombre.toLowerCase().includes(busqueda.toLowerCase())
-          )
+          );
       }
 
       //Mostrar advertencia cuando los datos estén cargando
